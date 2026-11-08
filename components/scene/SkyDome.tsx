@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { useApp } from '@/lib/store';
+import type { Theme } from '@/lib/types';
 
 const VERT = /* glsl */ `
   varying vec3 vDir;
@@ -86,9 +87,16 @@ const FRAG = /* glsl */ `
  * the same shader can be captured into the environment map that lights the
  * glass and the car paint.
  */
-export default function SkyDome({ followCamera = true }: { followCamera?: boolean }) {
+export default function SkyDome({
+  followCamera = true,
+  palette,
+}: {
+  followCamera?: boolean;
+  /** Overrides the app-wide colours, for scenes with a fixed time of day. */
+  palette?: (typeof PALETTE)[Theme];
+}) {
   const theme = useApp((s) => s.theme);
-  const p = PALETTE[theme];
+  const p = palette ?? PALETTE[theme];
   const ref = useRef<THREE.Mesh>(null);
 
   const uniforms = useMemo(

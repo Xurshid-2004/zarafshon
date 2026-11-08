@@ -4,13 +4,16 @@
 
 html,
 body {
-  height: 100%;
   margin: 0;
   padding: 0;
 }
 
+/* at fractional display scaling the pinned section can round a pixel too wide */
+html {
+  overflow-x: hidden;
+}
+
 body {
-  overflow: hidden;
   background: #070a0f;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -19,6 +22,17 @@ body {
 canvas {
   display: block;
   touch-action: none;
+}
+
+/* the construction canvas sits inside a scrolling page: let touch scroll through */
+.touch-scroll,
+.touch-scroll canvas {
+  touch-action: pan-y;
+}
+
+:focus-visible {
+  outline: 2px solid #e0b47a;
+  outline-offset: 3px;
 }
 
 /* thin scrollbars inside the floor panel */

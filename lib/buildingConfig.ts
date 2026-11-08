@@ -10,6 +10,7 @@
 //    apartment mesh   Bld11_F05_Apt02     (unique, carries metadata bounds)
 // ============================================================================
 
+import { ARCH } from './architecture';
 import { renderSetFor } from './renders';
 import { seeded } from './rng';
 import type {
@@ -21,10 +22,10 @@ import type {
   RoomRect,
 } from './types';
 
-/** Storey height, metres. */
-export const FLOOR_HEIGHT = 3.1;
+/** Storey height, metres (defined in lib/architecture.ts). */
+export const FLOOR_HEIGHT = ARCH.floorHeight;
 /** Floor-slab thickness, metres. */
-export const SLAB = 0.26;
+export const SLAB = ARCH.slab;
 /** Half-size of the ground plane, metres. */
 export const SITE_RADIUS = 46;
 /** Blueprint coordinate space. */
@@ -40,10 +41,15 @@ interface BuildingDef {
   floorsCount: number;
 }
 
-const DEFS: readonly BuildingDef[] = [
-  { id: 'A', meshPrefix: 'bld7', position: [-13.5, 0, 2], width: 16, depth: 12, floorsCount: 7 },
-  { id: 'B', meshPrefix: 'bld11', position: [14.5, 0, -2], width: 19, depth: 12, floorsCount: 11 },
-];
+/** Tower dimensions come from the architecture config. */
+const DEFS: readonly BuildingDef[] = ARCH.towers.map((t) => ({
+  id: t.id,
+  meshPrefix: t.meshPrefix,
+  position: t.position,
+  width: t.width,
+  depth: t.depth,
+  floorsCount: t.floors,
+}));
 
 /** Units on a given storey. Level 1 is commercial; the top storeys are penthouses. */
 function unitsOnFloor(def: BuildingDef, level: number): number {

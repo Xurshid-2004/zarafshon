@@ -4,6 +4,9 @@ const nextConfig = {
   // StrictMode's double-invoke would register every tween twice.
   reactStrictMode: false,
 
+  // the floating dev badge covers the construction timeline
+  devIndicators: false,
+
   // three.js ships untranspiled ESM examples; keep them in the compile graph
   transpilePackages: ['three'],
 
